@@ -3,6 +3,6 @@ require 'bundler'
 
 Bundler.require
 
-require './tickr'
+require './app'
 
 run Sinatra::Application
