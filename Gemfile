@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rake', '~> 10.0'
 gem 'sinatra', '~> 1.4'
 
 group :test do
