@@ -6,12 +6,6 @@ require File.join(APPLICATION_ROOT, 'lib', 'database_interface')
 
 describe Ticket do
   describe 'instance methods' do
-    before do
-      conn = DatabaseInterface.new
-      conn.drop_database if database_exists?(conn)
-      database_exists?(conn).should be_false
-      conn.create_database
-    end
     describe '#initialize' do
       before do
         @old_config = APP_CONFIG
@@ -25,6 +19,8 @@ describe Ticket do
         stub_const('APP_CONFIG', @old_config)
       end
       it 'creates tickets with IDs starting at (STARTING_OFFSET + NODE_NUMBER), incremented by MAX_NODES' do
+        reset_database
+
         Ticket.new.id.should == 329
         Ticket.new.id.should == 339
         Ticket.new.id.should == 349
@@ -35,8 +31,7 @@ describe Ticket do
   describe 'class methods' do
     describe '#last' do
       it 'returns the ID of the last generated ticket' do
-        conn = DatabaseInterface.new
-        conn.create_database unless database_exists?(conn)
+        ensure_database_exists
 
         last_id = Ticket.new.id
         Ticket.last.id.should == last_id

@@ -8,14 +8,14 @@ describe DatabaseInterface do
   end
   describe '#create_database' do
     it 'creates the MySQL database' do
-      @connection.drop_database if database_exists?(@connection)
-      database_exists?(@connection).should be_false
+      @connection.drop_database if database_exists?
+      database_exists?.should be_false
       @connection.create_database
-      database_exists?(@connection).should be_true
+      database_exists?.should be_true
     end
     it 'initializes the database with a single row with ID=1' do
-      @connection.drop_database if database_exists?(@connection)
-      database_exists?(@connection).should be_false
+      @connection.drop_database if database_exists?()
+      database_exists?.should be_false
       @connection.create_database
       $mysql.with do |client|
         client.query('SELECT COUNT(*) FROM tickets;').map{|m| m['COUNT(*)']}.first.should == 1
@@ -25,17 +25,15 @@ describe DatabaseInterface do
   end
   describe '#drop_database' do
     it 'drops the MySQL database' do
-      @connection.create_database if !database_exists?(@connection)
-      database_exists?(@connection).should be_true
+      @connection.create_database if !database_exists?
+      database_exists?.should be_true
       @connection.drop_database
-      database_exists?(@connection).should be_false
+      database_exists?.should be_false
     end
   end
   describe '#get_next_ticket_base_id' do
     it 'returns sequential ticket base IDs, starting at 2' do
-      @connection.drop_database if database_exists?(@connection)
-      database_exists?(@connection).should be_false
-      @connection.create_database
+      reset_database
 
       @connection.get_next_ticket_base_id.should == 2
       @connection.get_next_ticket_base_id.should == 3
@@ -44,7 +42,7 @@ describe DatabaseInterface do
   end
   describe '#get_last_ticket_base_id' do
     it 'returns most recent ticket base ID without incrementing it' do
-      @connection.create_database if !database_exists?(@connection)
+      ensure_database_exists
 
       last_id = @connection.get_next_ticket_base_id
       @connection.get_last_ticket_base_id.should == last_id

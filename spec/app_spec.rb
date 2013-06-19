@@ -1,6 +1,9 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe 'Application' do
+  before do
+    ensure_database_exists
+  end
   describe 'GET /status' do
     it 'returns 200 code with last id' do
       get '/status'
