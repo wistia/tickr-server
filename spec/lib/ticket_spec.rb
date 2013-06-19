@@ -6,7 +6,9 @@ require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
 
 describe Ticket do
   def database_exists?(conn)
-    conn.send(:query, 'SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
+    $mysql.with do |client|
+      client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
+    end
   end
   before do
     conn = DatabaseConnection.new

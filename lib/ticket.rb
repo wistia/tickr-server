@@ -1,4 +1,4 @@
-require 'database_connection'
+require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
 
 class Ticket
   def initialize

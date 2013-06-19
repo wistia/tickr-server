@@ -23,6 +23,8 @@ Use the following environment variables to configure Tickr's MySQL 5 database co
 * `TICKR_DATABASE_USERNAME`
 * `TICKR_DATABASE_PASSWORD`
 * `TICKR_DATABASE_NAME`
+* `TICKR_DATABASE_POOL_SIZE` is the number of concurrent connections in the database pool.
+* `TICKR_DATABASE_POOL_TIMEOUT` is the maximum  time the database pool will block before raising a `Timeout::Errror`.
 
 ### Application Configuration
 

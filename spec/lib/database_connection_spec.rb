@@ -4,7 +4,9 @@ require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
 
 describe DatabaseConnection do
   def database_exists?(conn)
-    conn.send(:query, 'SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
+    $mysql.with do |client|
+      client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
+    end
   end
   before do
     @connection = DatabaseConnection.new
@@ -20,8 +22,10 @@ describe DatabaseConnection do
       @connection.drop_database if database_exists?(@connection)
       database_exists?(@connection).should be_false
       @connection.create_database
-      @connection.send(:query, 'SELECT COUNT(*) FROM tickets;').map{|m| m['COUNT(*)']}.first.should == 1
-      @connection.send(:query, 'SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first.should == 1
+      $mysql.with do |client|
+        client.query('SELECT COUNT(*) FROM tickets;').map{|m| m['COUNT(*)']}.first.should == 1
+        client.query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first.should == 1
+      end
     end
   end
   describe '#drop_database' do
