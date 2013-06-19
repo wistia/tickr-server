@@ -1,5 +1,7 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
+puts APP_CONFIG.inspect
+
 describe 'Application' do
   before do
     ensure_database_exists

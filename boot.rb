@@ -2,7 +2,7 @@ APPLICATION_ROOT = File.dirname(__FILE__)
 require File.join(File.dirname(__FILE__), 'environments', 'base')
 
 env_filename = File.join(File.dirname(__FILE__), 'environments', settings.environment.to_s)
-require env_filename if File.exists?(env_filename)
+require env_filename if File.exists?("#{env_filename}.rb")
 
 # Load configuration from environment
 ENVIRONMENT_KEYS = %w(

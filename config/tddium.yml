@@ -1,0 +1,6 @@
+:tddium:
+  :hooks:
+    :worker: "\n"
+  :mysql:
+    :adapter: 'mysql2'
+    :version: '5.5'

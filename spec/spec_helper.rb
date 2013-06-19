@@ -31,5 +31,11 @@ def reset_database
 end
 
 def ensure_database_exists
+  puts 'Ensuring database exists.'
   DatabaseInterface.new.create_database if !database_exists?
+  puts 'Tables:'
+  $mysql.with do |client|
+    client.query("USE #{APP_CONFIG[:database_name]};")
+    client.query('SHOW TABLES;').map{|m| m["Tables_in_#{APP_CONFIG[:database_name]}"]}.each{|t| puts t}
+  end
 end
