@@ -4,7 +4,7 @@ require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
 
 describe DatabaseConnection do
   def database_exists?(conn)
-    conn.send(:query, 'SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:tickr_database_name])
+    conn.send(:query, 'SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
   end
   before do
     @connection = DatabaseConnection.new
