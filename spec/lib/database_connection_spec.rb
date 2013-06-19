@@ -37,7 +37,7 @@ describe DatabaseConnection do
     end
   end
   describe '#get_next_ticket_base_id' do
-    it 'returns sequential ticket IDs, starting at 1' do
+    it 'returns sequential ticket base IDs, starting at 1' do
       @connection.drop_database if database_exists?(@connection)
       database_exists?(@connection).should be_false
       @connection.create_database
@@ -45,6 +45,15 @@ describe DatabaseConnection do
       @connection.get_next_ticket_base_id.should == 1
       @connection.get_next_ticket_base_id.should == 2
       @connection.get_next_ticket_base_id.should == 3
+    end
+  end
+  describe '#get_last_ticket_base_id' do
+    it 'returns most recent ticket base ID without incrementing it' do
+      @connection.create_database if !database_exists?(@connection)
+
+      last_id = @connection.get_next_ticket_base_id
+      @connection.get_last_ticket_base_id.should == last_id
+      @connection.get_last_ticket_base_id.should == last_id
     end
   end
 end

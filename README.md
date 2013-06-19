@@ -11,6 +11,24 @@ increment amounts are set globally, and we want to allow this ticketing system
 to operate on databases that serve other applications as well, without requiring
 them to conform to a non-standard auto_increment configuration.
 
+## Creating tickets
+
+Tickets are created via HTTP GET requests. To get a single ticket, run:
+
+    GET /tickets/create
+
+The response body will be a single-element JSON array containing the new ticket, e.g. `[54313001]`.
+
+To generate a batch of 5 tickets, run:
+
+    GET /tickets/create/5
+
+If TICKR_MAX_NODES were 4 in our earlier example, this would return `[54313005,54313009,54313013,543130017,543130021]`.
+
+## Monitoring
+
+Tickr supports a `GET /status` route that returns a response code of 200 to verify the application is running. The status body is a JSON hash with a `last_ticket` key, which maps to the last ticket that was generated.
+
 ## Environment variables
 
 Tickr insists that you set a few environment variables.
@@ -48,8 +66,16 @@ Run the spec suite and be sure your tests pass:
 
 `rake spec`
 
+Start your server with:
+
+`rackup`
+
 ### Production
 
 After setting your environment variables as specified, create your database with:
 
-`rake db:create`
+`RACK_ENV=production rake db:create`
+
+Start your server with:
+
+`rackup -E production`
