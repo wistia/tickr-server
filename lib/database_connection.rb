@@ -24,16 +24,14 @@ class DatabaseConnection
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
       client.query('REPLACE INTO tickets (stub) VALUES ("a");')
-      # Return LAST_INSERT_ID - 1, because AUTO_INCREMENT starts with 1.
-      client.query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first - 1
+      client.query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first
     end
   end
 
   def get_last_ticket_base_id
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      # Return last_id - 1, because AUTO_INCREMENT starts with 1.
-      client.query('SELECT id FROM tickets;').map{|m| m['id']}.first - 1
+      client.query('SELECT id FROM tickets;').map{|m| m['id']}.first
     end
   end
 end

@@ -37,14 +37,14 @@ describe DatabaseConnection do
     end
   end
   describe '#get_next_ticket_base_id' do
-    it 'returns sequential ticket base IDs, starting at 1' do
+    it 'returns sequential ticket base IDs, starting at 2' do
       @connection.drop_database if database_exists?(@connection)
       database_exists?(@connection).should be_false
       @connection.create_database
 
-      @connection.get_next_ticket_base_id.should == 1
       @connection.get_next_ticket_base_id.should == 2
       @connection.get_next_ticket_base_id.should == 3
+      @connection.get_next_ticket_base_id.should == 4
     end
   end
   describe '#get_last_ticket_base_id' do

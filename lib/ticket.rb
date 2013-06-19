@@ -15,6 +15,10 @@ class Ticket
 
   private
   def ticket_id_from_db_id(db_id)
-    ((db_id - 1) * APP_CONFIG[:max_nodes]) + APP_CONFIG[:node_number] + APP_CONFIG[:starting_offset]
+    # We subtract two from the db_id, one for each reason:
+    # (1) Our first ID should be starting_offset, not starting_offset+max_nodes
+    # (2) Our database is always one ID ahead of our application because MySQL
+    #     requires us to seed it with 1 rather 0.
+    ((db_id - 2) * APP_CONFIG[:max_nodes]) + APP_CONFIG[:node_number] + APP_CONFIG[:starting_offset]
   end
 end
