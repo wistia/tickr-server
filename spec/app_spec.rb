@@ -8,6 +8,11 @@ describe 'Application' do
     it 'returns 200 code with last id' do
       get '/status'
       last_response.should be_ok
+      data = JSON.parse(last_response.body)
+      data.is_a?(Hash).should be_true
+      data.has_key?('last_ticket').should be_true
+      data['last_ticket'].is_a?(Fixnum).should be_true
+      data['last_ticket'].should == Ticket.last.id
     end
   end
 
