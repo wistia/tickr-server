@@ -6,13 +6,20 @@ class DatabaseConnection
       CREATE TABLE `tickets` (
         `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `stub` char(1) NOT NULL UNIQUE DEFAULT ''
-      ) ENGINE=MyISAM CHARACTER SET='utf8'
+      ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET='utf8'
     EOS
     )
+    query('INSERT INTO tickets (stub) VALUES ("a");')
   end
 
   def drop_database
     query("DROP DATABASE `#{config[:database]}`;")
+  end
+
+  def get_next_ticket_base_id
+    query('REPLACE INTO tickets (stub) VALUES ("a");')
+    # Return LAST_INSERT_ID - 1, because AUTO_INCREMENT starts with 1.
+    query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first - 1
   end
 
   private
