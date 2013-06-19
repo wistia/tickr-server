@@ -5,11 +5,6 @@ require File.join(APPLICATION_ROOT, 'lib', 'ticket')
 require File.join(APPLICATION_ROOT, 'lib', 'database_interface')
 
 describe Ticket do
-  def database_exists?(conn)
-    $mysql.with do |client|
-      client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
-    end
-  end
   describe 'instance methods' do
     before do
       conn = DatabaseInterface.new

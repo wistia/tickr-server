@@ -15,3 +15,9 @@ RSpec.configure do |config|
     Sinatra::Application
   end
 end
+
+def database_exists?(conn)
+  $mysql.with do |client|
+    client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
+  end
+end
