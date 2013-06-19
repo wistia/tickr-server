@@ -1,12 +1,12 @@
-require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
+require File.join(APPLICATION_ROOT, 'lib', 'database_interface')
 
 class Ticket
   def self.last
-    self.new(DatabaseConnection.new.get_last_ticket_base_id)
+    self.new(DatabaseInterface.new.get_last_ticket_base_id)
   end
 
   def initialize(db_id = nil)
-    db_id ||= DatabaseConnection.new.get_next_ticket_base_id
+    db_id ||= DatabaseInterface.new.get_next_ticket_base_id
     @id = ticket_id_from_db_id(db_id)
   end
   def id

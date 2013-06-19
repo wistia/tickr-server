@@ -1,15 +1,15 @@
 require File.join(File.dirname(__FILE__), '..', 'spec_helper')
 
-require File.join(APPLICATION_ROOT, 'lib', 'database_connection')
+require File.join(APPLICATION_ROOT, 'lib', 'database_interface')
 
-describe DatabaseConnection do
+describe DatabaseInterface do
   def database_exists?(conn)
     $mysql.with do |client|
       client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
     end
   end
   before do
-    @connection = DatabaseConnection.new
+    @connection = DatabaseInterface.new
   end
   describe '#create_database' do
     it 'creates the MySQL database' do

@@ -2,7 +2,7 @@ require 'sinatra'
 
 require './boot'
 
-require './lib/database_connection'
+require './lib/database_interface'
 require './lib/ticket'
 
 get '/status' do

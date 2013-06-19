@@ -1,4 +1,4 @@
-class DatabaseConnection
+class DatabaseInterface
   def create_database
     $mysql.with do |client|
       client.query("CREATE DATABASE `#{APP_CONFIG[:database_name]}`;")
