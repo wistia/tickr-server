@@ -1,4 +1,4 @@
-require 'spec_helper'
+require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe 'The application' do
   it 'returns "Hello, World!" for root URL' do
