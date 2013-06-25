@@ -1,4 +1,7 @@
 ENV['RACK_ENV'] = "test"
+ENV['TICKR_MAX_NODES'] ||= '5'
+ENV['TICKR_STARTING_OFFSET'] ||= '1'
+ENV['TICKR_NODE_NUMBER'] ||= '0'
 
 require 'rubygems'
 require 'bundler'
