@@ -29,7 +29,7 @@ end
 
 APP_CONFIG = ENVIRONMENT_SETTINGS.inject({}) do |result, elem|
   k_sym = elem[0].downcase.to_sym
-  result.merge(k_sym => ENV["TICKR_#{elem[0]}"].blank? ? APP_CONFIG_DEFAULTS[k_sym]: ENV["TICKR_#{elem}"].send(elem[1]))
+  result.merge(k_sym => ENV["TICKR_#{elem[0]}"].blank? ? APP_CONFIG_DEFAULTS[k_sym] : ENV["TICKR_#{elem[0]}"].send(elem[1]))
 end
 
 $mysql = ConnectionPool.new(size: APP_CONFIG[:database_pool_size], timeout: APP_CONFIG[:database_pool_timeout]) do
