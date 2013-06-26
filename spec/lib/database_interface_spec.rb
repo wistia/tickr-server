@@ -6,16 +6,28 @@ describe DatabaseInterface do
   before do
     @connection = DatabaseInterface.new
   end
+  describe '#create_database_if_not_exists' do
+    it 'creates the database when it does not exist' do
+      @connection.drop_database if @connection.database_exists?
+      @connection.should_receive(:create_database)
+      @connection.create_database_if_not_exists
+    end
+    it 'does not create the database when it exists' do
+      @connection.create_database unless @connection.database_exists?
+      @connection.should_not_receive(:create_database)
+      @connection.create_database_if_not_exists
+    end
+  end
   describe '#create_database' do
     it 'creates the MySQL database' do
-      @connection.drop_database if database_exists?
-      database_exists?.should be_false
+      @connection.drop_database if @connection.database_exists?
+      @connection.database_exists?.should be_false
       @connection.create_database
-      database_exists?.should be_true
+      @connection.database_exists?.should be_true
     end
     it 'initializes the database with a single row with ID=1' do
-      @connection.drop_database if database_exists?()
-      database_exists?.should be_false
+      @connection.drop_database if @connection.database_exists?()
+      @connection.database_exists?.should be_false
       @connection.create_database
       $mysql.with do |client|
         client.query('SELECT COUNT(*) FROM tickets;').map{|m| m['COUNT(*)']}.first.should == 1
@@ -25,10 +37,10 @@ describe DatabaseInterface do
   end
   describe '#drop_database' do
     it 'drops the MySQL database' do
-      @connection.create_database if !database_exists?
-      database_exists?.should be_true
+      @connection.create_database if !@connection.database_exists?
+      @connection.database_exists?.should be_true
       @connection.drop_database
-      database_exists?.should be_false
+      @connection.database_exists?.should be_false
     end
   end
   describe '#get_next_ticket_base_id' do

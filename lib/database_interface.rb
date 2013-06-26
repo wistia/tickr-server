@@ -14,6 +14,10 @@ class DatabaseInterface
     end
   end
 
+  def create_database_if_not_exists
+    create_database unless database_exists?
+  end
+
   def drop_database
     $mysql.with do |client|
       client.query("DROP DATABASE `#{APP_CONFIG[:database_name]}`;")
@@ -32,6 +36,12 @@ class DatabaseInterface
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
       client.query('SELECT id FROM tickets;').map{|m| m['id']}.first
+    end
+  end
+
+  def database_exists?
+    $mysql.with do |client|
+      client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
     end
   end
 end

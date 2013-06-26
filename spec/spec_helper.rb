@@ -22,17 +22,13 @@ RSpec.configure do |config|
   end
 end
 
-def database_exists?
-  $mysql.with do |client|
-    client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
-  end
-end
-
 def reset_database
-  DatabaseInterface.new.drop_database if database_exists?
-  DatabaseInterface.new.create_database
+  interface = DatabaseInterface.new
+  interface.drop_database if interface.database_exists?
+  interface.create_database
 end
 
 def ensure_database_exists
-  DatabaseInterface.new.create_database if !database_exists?
+  interface = DatabaseInterface.new
+  interface.create_database if !interface.database_exists?
 end
