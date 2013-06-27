@@ -68,7 +68,7 @@ Run the spec suite and be sure your tests pass:
 
 Start your server with:
 
-`rackup`
+`rackup` or `unicorn -E development`
 
 ### Production
 
@@ -78,4 +78,4 @@ After setting your environment variables as specified, create your database with
 
 Start your server with:
 
-`rackup -E production`
+`unicorn -E production`
