@@ -9,6 +9,7 @@ class Ticket
     db_id ||= DatabaseInterface.new.get_next_ticket_base_id
     @id = ticket_id_from_db_id(db_id)
   end
+
   def id
     @id
   end

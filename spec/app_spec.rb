@@ -27,12 +27,13 @@ describe 'Application' do
   end
 
   describe 'GET /tickets/create/20' do
-    it 'returns JSON array of tickets of length 20' do
+    it 'returns JSON array of one ticket group' do
       get '/tickets/create/20'
       last_response.should be_ok
       data = JSON.parse(last_response.body)
       data.is_a?(Array).should be_true
-      data.length.should == 20
+      data.length.should == 3
+      data.last.should == 20
       data.each{|d| d.is_a?(Fixnum).should be_true}
     end
   end

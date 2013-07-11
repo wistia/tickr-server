@@ -31,7 +31,7 @@ describe DatabaseInterface do
       @connection.create_database
       $mysql.with do |client|
         client.query('SELECT COUNT(*) FROM tickets;').map{|m| m['COUNT(*)']}.first.should == 1
-        client.query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first.should == 1
+        client.query('SELECT id FROM tickets WHERE stub = "a";').map{|m| m['id']}.first.should == 1
       end
     end
   end
@@ -59,6 +59,20 @@ describe DatabaseInterface do
       last_id = @connection.get_next_ticket_base_id
       @connection.get_last_ticket_base_id.should == last_id
       @connection.get_last_ticket_base_id.should == last_id
+    end
+  end
+  describe '#increment_next_ticket_base_id_by' do
+    it 'increments the next ticket base id by the parameter specified' do
+      reset_database
+
+      @connection.get_next_ticket_base_id.should == 2
+      @connection.increment_next_ticket_base_id_by(10)
+      @connection.get_next_ticket_base_id.should == 13
+      @connection.get_next_ticket_base_id.should == 14
+
+      @connection.increment_next_ticket_base_id_by(20)
+      @connection.get_next_ticket_base_id.should == 35
+      @connection.get_next_ticket_base_id.should == 36
     end
   end
 end
