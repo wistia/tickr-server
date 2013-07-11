@@ -7,8 +7,8 @@ class TicketGroup
   # the difference between consecutive tickets, and the number of
   # tickets to generate (including the first ticket).
   def initialize(size = 2)
-    ticket = Ticket.new
-    DatabaseInterface.new.increment_next_ticket_base_id_by(size.to_i - 1)
+    last_base_id = DatabaseInterface.new.increment_next_ticket_base_id_by(size.to_i)
+    ticket = Ticket.new(last_base_id - (size.to_i - 1))
     @group = [ticket.id, APP_CONFIG[:max_nodes], size.to_i]
   end
 

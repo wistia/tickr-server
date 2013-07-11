@@ -27,15 +27,16 @@ class DatabaseInterface
   def get_next_ticket_base_id
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      client.query("UPDATE tickets SET id = id + 1 WHERE stub = 'a';")
-      client.query('SELECT id FROM tickets WHERE stub = "a";').map{|m| m['id']}.first
+      client.query("UPDATE tickets SET id = @id := id + 1 WHERE stub = 'a';")
+      client.query('SELECT @id;').map{|m| m['@id']}.first
     end
   end
 
   def increment_next_ticket_base_id_by(size)
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      client.query("UPDATE tickets SET id = id + #{size} WHERE stub = 'a';")
+      client.query("UPDATE tickets SET id = @id := id + #{size} WHERE stub = 'a';")
+      client.query('SELECT @id;').map{|m| m['@id']}.first
     end
   end
 
