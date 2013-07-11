@@ -16,7 +16,5 @@ get '/tickets/create' do
 end
 
 get '/tickets/create/:num_tickets' do
-  (1..params[:num_tickets].to_i).inject([]) do |result, t|
-    result << Ticket.new.id
-  end.to_json
+  TicketGroup.new(params[:num_tickets]).group.to_json
 end
