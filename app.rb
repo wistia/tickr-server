@@ -4,6 +4,7 @@ require './boot'
 
 require './lib/database_interface'
 require './lib/ticket'
+require './lib/ticket_group'
 
 get '/status' do
   {

@@ -21,8 +21,11 @@ describe TicketGroup do
       it 'creates an array with initial ticket id, id difference, and size of ticket group' do
         reset_database
 
-        TicketGroup.new(10).group.should == [329, 10, 10]
-        TicketGroup.new(20).group.should == [429, 10, 20]
+        TicketGroup.new(20).group.should == [329, 10, 20]
+        TicketGroup.new(20).group.should == [529, 10, 20]
+        TicketGroup.new(40).group.should == [729, 10, 40]
+        TicketGroup.new.group.should == [1129, 10, 2]
+        TicketGroup.new.group.should == [1149, 10, 2]
       end
     end
   end
