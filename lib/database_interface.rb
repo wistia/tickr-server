@@ -3,6 +3,7 @@ class DatabaseInterface
     $mysql.with do |client|
       client.query("CREATE DATABASE `#{APP_CONFIG[:database_name]}`;")
       client.query("USE #{APP_CONFIG[:database_name]};")
+      client.query("SET @@auto_increment_increment=1;")
       client.query(<<-EOS
         CREATE TABLE `tickets` (
           `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -29,6 +30,13 @@ class DatabaseInterface
       client.query("USE #{APP_CONFIG[:database_name]};")
       client.query('REPLACE INTO tickets (stub) VALUES ("a");')
       client.query('SELECT LAST_INSERT_ID();').map{|m| m['LAST_INSERT_ID()']}.first
+    end
+  end
+
+  def increment_next_ticket_base_id(size)
+    $mysql.with do |client|
+      client.query("USE #{APP_CONFIG[:database_name]};")
+      client.query("SET @@auto_increment_increment=#{size + 1};")
     end
   end
 

@@ -22,6 +22,7 @@ describe TicketGroup do
         reset_database
 
         TicketGroup.new(10).group.should == [329, 10, 10]
+        TicketGroup.new(20).group.should == [429, 10, 20]
       end
     end
   end

@@ -1,4 +1,5 @@
 require File.join(APPLICATION_ROOT, 'lib', 'ticket')
+require File.join(APPLICATION_ROOT, 'lib', 'database_interface')
 
 class TicketGroup
 
@@ -6,11 +7,9 @@ class TicketGroup
   # the difference between adjacent tickets, and the number of
   # tickets to generate.
   def initialize(size = 2)
-    initial_ticket = Ticket.new
-    next_ticket = Ticket.new
-    id_diff = next_ticket.id - initial_ticket.id
-
-    @group = [initial_ticket.id, id_diff, size.to_i]
+    ticket = Ticket.new
+    DatabaseInterface.new.increment_next_ticket_base_id(size.to_i)
+    @group = [ticket.id, APP_CONFIG[:max_nodes], size.to_i]
   end
 
   def group

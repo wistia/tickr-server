@@ -61,4 +61,15 @@ describe DatabaseInterface do
       @connection.get_last_ticket_base_id.should == last_id
     end
   end
+  describe '#increment_next_ticket_base_id' do
+    it 'increments the next ticket base id by the parameter specified' do
+      reset_database
+
+      @connection.get_next_ticket_base_id.should == 2
+      @connection.increment_next_ticket_base_id(10)
+      @connection.get_next_ticket_base_id.should == 12
+      @connection.increment_next_ticket_base_id(20)
+      @connection.get_next_ticket_base_id.should == 22
+    end
+  end
 end
