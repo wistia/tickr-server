@@ -67,12 +67,12 @@ describe DatabaseInterface do
 
       @connection.get_next_ticket_base_id.should == 2
       @connection.increment_next_ticket_base_id_by(10)
-      @connection.get_next_ticket_base_id.should == 12
       @connection.get_next_ticket_base_id.should == 13
+      @connection.get_next_ticket_base_id.should == 14
 
       @connection.increment_next_ticket_base_id_by(20)
-      @connection.get_next_ticket_base_id.should == 33
-      @connection.get_next_ticket_base_id.should == 34
+      @connection.get_next_ticket_base_id.should == 35
+      @connection.get_next_ticket_base_id.should == 36
     end
   end
 end

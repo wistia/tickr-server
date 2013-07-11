@@ -8,7 +8,7 @@ class TicketGroup
   # tickets to generate (including the first ticket).
   def initialize(size = 2)
     ticket = Ticket.new
-    DatabaseInterface.new.increment_next_ticket_base_id_by(size.to_i)
+    DatabaseInterface.new.increment_next_ticket_base_id_by(size.to_i - 1)
     @group = [ticket.id, APP_CONFIG[:max_nodes], size.to_i]
   end
 

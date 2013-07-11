@@ -35,7 +35,7 @@ class DatabaseInterface
   def increment_next_ticket_base_id_by(size)
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      client.query("UPDATE tickets SET id = id + #{size - 1} WHERE stub = 'a';")
+      client.query("UPDATE tickets SET id = id + #{size} WHERE stub = 'a';")
     end
   end
 
