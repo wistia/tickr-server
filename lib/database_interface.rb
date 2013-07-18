@@ -2,7 +2,7 @@ class DatabaseInterface
   def create_database
     $mysql.with do |client|
       client.query("CREATE DATABASE `#{APP_CONFIG[:database_name]}`;")
-      client.query("USE #{APP_CONFIG[:database_name]};")
+      use_tickr_database(client)
       client.query(<<-EOS
         CREATE TABLE `tickets` (
           `id` bigint(20) UNSIGNED NOT NULL,
@@ -26,7 +26,7 @@ class DatabaseInterface
 
   def get_next_ticket_base_id
     $mysql.with do |client|
-      client.query("USE #{APP_CONFIG[:database_name]};")
+      use_tickr_database(client)
       client.query('UPDATE tickets SET id = @id := id + 1 WHERE stub = \'a\';')
       client.query('SELECT @id;').map{|m| m['@id']}.first
     end
@@ -34,7 +34,7 @@ class DatabaseInterface
 
   def increment_next_ticket_base_id_by(size)
     $mysql.with do |client|
-      client.query("USE #{APP_CONFIG[:database_name]};")
+      use_tickr_database(client)
       client.query("UPDATE tickets SET id = @id := id + #{size} WHERE stub = 'a';")
       client.query('SELECT @id;').map{|m| m['@id']}.first
     end
@@ -42,7 +42,7 @@ class DatabaseInterface
 
   def get_last_ticket_base_id
     $mysql.with do |client|
-      client.query("USE #{APP_CONFIG[:database_name]};")
+      use_tickr_database(client)
       client.query('SELECT id FROM tickets WHERE stub = \'a\';').map{|m| m['id']}.first
     end
   end
@@ -51,5 +51,9 @@ class DatabaseInterface
     $mysql.with do |client|
       client.query('SHOW DATABASES;').map{|m| m['Database']}.include?(APP_CONFIG[:database_name])
     end
+  end
+
+  def use_tickr_database(client)
+    client.query("USE #{APP_CONFIG[:database_name]};")
   end
 end
