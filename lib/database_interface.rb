@@ -10,7 +10,7 @@ class DatabaseInterface
         ) ENGINE=MyISAM AUTO_INCREMENT=1 CHARACTER SET='utf8';
       EOS
       )
-      client.query('INSERT INTO tickets (id, stub) VALUES (1, "a");')
+      client.query('INSERT INTO tickets (id, stub) VALUES (1, \'a\');')
     end
   end
 
@@ -27,7 +27,7 @@ class DatabaseInterface
   def get_next_ticket_base_id
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      client.query("UPDATE tickets SET id = @id := id + 1 WHERE stub = 'a';")
+      client.query('UPDATE tickets SET id = @id := id + 1 WHERE stub = \'a\';')
       client.query('SELECT @id;').map{|m| m['@id']}.first
     end
   end
@@ -43,7 +43,7 @@ class DatabaseInterface
   def get_last_ticket_base_id
     $mysql.with do |client|
       client.query("USE #{APP_CONFIG[:database_name]};")
-      client.query('SELECT id FROM tickets WHERE stub = "a";').map{|m| m['id']}.first
+      client.query('SELECT id FROM tickets WHERE stub = \'a\';').map{|m| m['id']}.first
     end
   end
 
