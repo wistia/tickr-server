@@ -1,15 +1,36 @@
 # Tickr
 
 Tickr is a distributed, decentralized, MySQL-backed 64-bit ID generation system
-based on [Flickr's ticketing implementation](http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/).
+based in part on [Flickr's ticketing implementation](http://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/).
 
-One major difference from Flickr's implementation is that rather than rely on
-MySQL to increment by a particular value, or maintain some starting offset,
-MySQL will autoincrement as usual and our application interface will provide
-the arithmetic to adjust it accordingly. This decision was made because MySQL
-increment amounts are set globally, and we want to allow this ticketing system
-to operate on databases that serve other applications as well, without requiring
-them to conform to a non-standard auto_increment configuration.
+There are a few major differences from Flickr's implementation. They are:
+
+1. Rather than rely on MySQL to increment by a particular value, or maintain
+some starting offset, MySQL will increment by way of an UPDATE query. This
+decision was made because (1) MySQL increment amounts are set globally, and we
+want to allow this ticketing system to operate on databases that serve other
+applications as well, without requiring them to conform to a non-standard
+auto_increment configuration; and (2) we desire support for creating batches of
+tickets, and it is cheaper to generate a batch of size _n_ with one query than
+with _n_ queries.
+
+1. Tickets can be created in batches so that client applications can retrieve
+IDs asynchronously for network-free inserts.
+
+1. Batches of tickets are represented not by their literal IDs, but by
+a small JSON structure that maps to a [potentially large] set of tickets.
+
+The JSON structure for a group of tickets looks like this:
+
+    {
+      'first': 25,
+      'increment': 5,
+      'count': 5
+    }
+
+This example structure would map to the following array of tickets:
+
+    [25, 30, 35, 40, 45]
 
 ## Creating tickets
 
@@ -23,7 +44,15 @@ To generate a batch of 5 tickets, run:
 
     GET /tickets/create/5
 
-If TICKR_MAX_NODES were 4 in our earlier example, this would return `[54313005,54313009,54313013,543130017,543130021]`.
+If TICKR_MAX_NODES were 4 in our earlier example, this would return
+
+    {
+      'first': 54313005,
+      'increment': 4,
+      'count': 5
+    }
+
+which maps to `[54313005,54313009,54313013,543130017,543130021]`.
 
 ## Monitoring
 
