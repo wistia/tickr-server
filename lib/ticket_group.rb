@@ -9,7 +9,11 @@ class TicketGroup
   def initialize(size = 2)
     last_base_id = DatabaseInterface.new.increment_next_ticket_base_id_by(size.to_i)
     ticket = Ticket.new(last_base_id - (size.to_i - 1))
-    @group = [ticket.id, APP_CONFIG[:max_nodes], size.to_i]
+    @group = {
+      'first' => ticket.id,
+      'increment' => APP_CONFIG[:max_nodes],
+      'count' => size.to_i
+    }
   end
 
   def group
