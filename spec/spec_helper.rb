@@ -32,3 +32,13 @@ def ensure_database_exists
   interface = DatabaseInterface.new
   interface.create_database if !interface.database_exists?
 end
+
+def with_silenced_output
+  orig_stderr = $stderr
+  orig_stdout = $stdout
+  $stderr = File.new('/dev/null', 'w')
+  $stdout = File.new('/dev/null', 'w')
+  yield
+  $stderr = orig_stderr
+  $stdout = orig_stdout
+end

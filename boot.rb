@@ -16,7 +16,8 @@ ENVIRONMENT_SETTINGS = {
   'DATABASE_USERNAME' => :to_s,
   'MAX_NODES' => :to_i,
   'NODE_NUMBER' => :to_i,
-  'STARTING_OFFSET' => :to_i
+  'STARTING_OFFSET' => :to_i,
+  'HTTP_AUTH_PASSWORD' => :to_s
 }
 
 REQUIRED_ENVIRONMENT_KEYS = %w(

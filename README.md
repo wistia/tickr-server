@@ -75,6 +75,8 @@ Use the following environment variables to configure Tickr's MySQL 5 database co
 
 ### Application Configuration
 
+Required configurations:
+
 * `TICKR_MAX_NODES` is the maximum number of nodes you want your tickr cluster to
 support. This cannot be changed once your system goes live.
 * `TICKR_STARTING_OFFSET` is the first ID you wish to provide. This is useful if
@@ -82,6 +84,12 @@ you've been providing auto_increment IDs in your app, and are just now moving to
 tickr. If your last auto_increment ID is 1,000,000, you could start tickr with
 an offset of 1,000,001. This cannot be changed once your system goes live.
 * `TICKR_NODE_NUMBER` is the 0-indexed node of the cluster.
+
+Optional configurations:
+
+* `TICKR_HTTP_AUTH_PASSWORD` if set, is a password to be used for HTTP BASIC
+authentication. This is useful if your server is exposed through a public
+network interface.
 
 ## Getting Started
 

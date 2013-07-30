@@ -4,6 +4,35 @@ describe 'Application' do
   before do
     ensure_database_exists
   end
+
+  describe 'authentication' do
+    describe 'when enabled' do
+      before do
+        ENV['TICKR_HTTP_AUTH_PASSWORD'] = 'password'
+        with_silenced_output {load 'boot.rb'} # Reload app with ENV change
+      end
+      it 'allows on password match' do
+        authorize '', 'password'
+        get '/status'
+        last_response.status.should == 200
+      end
+      it 'disallows on password mismatch' do
+        authorize '', 'badpassword'
+        get '/status'
+        last_response.status.should == 401
+      end
+    end
+    describe 'when disabled' do
+      before do
+        ENV['TICKR_HTTP_AUTH_PASSWORD'] = nil
+        with_silenced_output {load 'boot.rb'} # Reload app with ENV change
+      end
+      it 'allows' do
+        get '/status'
+        last_response.status.should == 200
+      end
+    end
+  end
   describe 'GET /status' do
     it 'returns 200 code with last id' do
       get '/status'
