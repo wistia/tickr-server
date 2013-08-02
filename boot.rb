@@ -38,5 +38,6 @@ $mysql = ConnectionPool.new(size: APP_CONFIG[:database_pool_size], timeout: APP_
     host: APP_CONFIG[:database_host],
     username: APP_CONFIG[:database_username],
     password: APP_CONFIG[:database_password],
+    reconnect: true
   )
 end
